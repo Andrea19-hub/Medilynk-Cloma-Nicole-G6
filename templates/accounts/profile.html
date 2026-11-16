@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}My Profile - Medilynk{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+                <h3 class="fw-bold text-primary mb-3">Account Profile</h3>
+                <p class="text-muted">Manage your personal information and contact details.</p>
+                <hr>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                        <a href="{% if user.role == 'admin' %}{% url 'admin_dashboard' %}{% else %}{% url 'patient_dashboard' %}{% endif %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

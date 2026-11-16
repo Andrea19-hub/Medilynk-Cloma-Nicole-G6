@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Patient Welcome Banner -->
+    <div class="card shadow-sm border-0 mb-4 border-start border-success border-5">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="text-success fw-bold mb-1">Patient Portal — Welcome, {{ request.user.username|title }}!</h2>
+                    <p class="text-muted mb-2">Account Status: <span class="badge bg-success">Active Patient</span></p>
+                    <p class="mb-0 text-secondary">Track your upcoming medical appointments, view active prescriptions, and access your personal health records.</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a href="{% url 'profile' %}" class="btn btn-success">
+                        <i class="fas fa-user-edit"></i> Edit My Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Modules -->
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-success">My Appointments</h5>
+                    <p class="card-text text-muted small">View your scheduled check-ups and doctor consultations.</p>
+                    <a href="#" class="btn btn-sm btn-outline-success">View Schedule</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-success">My Prescriptions</h5>
+                    <p class="card-text text-muted small">Check active medication dosages and doctor's instructions.</p>
+                    <a href="#" class="btn btn-sm btn-outline-success">View Medications</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-success">Lab & Health Records</h5>
+                    <p class="card-text text-muted small">Download your diagnostic reports and medical history.</p>
+                    <a href="#" class="btn btn-sm btn-outline-success">Access Records</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

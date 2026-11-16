@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Admin Welcome Banner -->
+    <div class="card shadow-sm border-0 mb-4 bg-dark text-white">
+        <div class="card-body p-4">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="text-success fw-bold mb-1">MEDILYNK Admin Control Center</h2>
+                    <p class="text-light mb-2">Logged in as: <span class="badge bg-success">{{ request.user.username|title }} (Administrator)</span></p>
+                    <p class="mb-0 text-secondary">Manage registered patients, oversee medicine inventory, and configure system records.</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <a href="/admin/" class="btn btn-success me-2">Django Admin Panel</a>
+                    <a href="{% url 'profile' %}" class="btn btn-outline-light">Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin System Overview Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 border-start border-success border-4">
+                <div class="card-body">
+                    <h6 class="text-muted text-uppercase small fw-bold">Registered Patients</h6>
+                    <h2 class="fw-bold text-dark mb-0">{{ total_patients }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 border-start border-primary border-4">
+                <div class="card-body">
+                    <h6 class="text-muted text-uppercase small fw-bold">Total System Accounts</h6>
+                    <h2 class="fw-bold text-dark mb-0">{{ total_users }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Management Actions -->
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Patient Management</h5>
+                    <p class="card-text text-muted small">View, verify, or update registered patient accounts and roles.</p>
+                    <a href="/admin/accounts/user/" class="btn btn-sm btn-success">Manage Users</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Medicine Inventory</h5>
+                    <p class="card-text text-muted small">Add new medicines, update stock levels, and track expirations.</p>
+                    <a href="/admin/" class="btn btn-sm btn-success">Manage Inventory</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Appointment Approvals</h5>
+                    <p class="card-text text-muted small">Review and approve pending patient consultation requests.</p>
+                    <a href="/admin/" class="btn btn-sm btn-success">Review Requests</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
