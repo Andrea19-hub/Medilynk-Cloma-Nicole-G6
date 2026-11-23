@@ -1,13 +1,14 @@
 from django.urls import path
-from . import views
 from django.shortcuts import redirect
+from . import views
+from .decorators import home_for
+
 
 def dashboard_router(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    if getattr(request.user, 'role', None) == 'admin' or request.user.is_staff or request.user.is_superuser:
-        return redirect('admin_dashboard')
-    return redirect('patient_dashboard')
+    return redirect(home_for(request.user))
+
 
 urlpatterns = [
     path('', dashboard_router, name='home'),
@@ -16,6 +17,7 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('patient-dashboard/', views.patient_dashboard_view, name='patient_dashboard'),
+    path('pharmacist-dashboard/', views.pharmacist_dashboard_view, name='pharmacist_dashboard'),
     path('admin-dashboard/', views.admin_dashboard_view, name='admin_dashboard'),
     path('profile/', views.profile_view, name='profile'),
 ]

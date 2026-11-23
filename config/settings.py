@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from django.contrib.messages import constants as messages
 
 load_dotenv()
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Local apps
     'accounts',
+    'pharmacy',
 ]
 
 MIDDLEWARE = [
@@ -138,13 +140,12 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = 'login'
+
+# Bootstrap alert class for Django error messages
+MESSAGE_TAGS = {messages.ERROR: 'danger'}

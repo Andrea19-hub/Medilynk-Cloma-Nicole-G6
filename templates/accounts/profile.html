@@ -8,14 +8,24 @@
             <div class="card-body p-4">
                 <h3 class="fw-bold text-primary mb-3">Account Profile</h3>
                 <p class="text-muted">Manage your personal information and contact details.</p>
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile photo" class="rounded-circle mb-3" style="width:96px;height:96px;object-fit:cover;">
+                {% endif %}
                 <hr>
 
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% for e in field.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+                        </div>
+                    {% endfor %}
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-                        <a href="{% if user.role == 'admin' %}{% url 'admin_dashboard' %}{% else %}{% url 'patient_dashboard' %}{% endif %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
                     </div>
                 </form>
             </div>

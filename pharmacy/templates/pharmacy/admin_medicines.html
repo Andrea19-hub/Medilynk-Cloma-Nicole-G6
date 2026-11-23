@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}All Medicines - Medilynk{% endblock %}
+{% block content %}
+<h3 class="fw-bold text-primary mb-3">All Medicine Listings</h3>
+<form class="d-flex mb-3" method="get">
+  <input name="q" value="{{ q }}" class="form-control me-2" placeholder="Search by medicine or pharmacy">
+  <button class="btn btn-outline-primary">Search</button>
+</form>
+<div class="table-responsive card shadow-sm border-0"><table class="table mb-0 align-middle">
+<thead><tr><th>Medicine</th><th>Pharmacy</th><th>Availability</th><th>Last updated</th><th></th></tr></thead>
+{% for m in medicines %}
+<tr>
+  <td>{{ m.name }} {{ m.strength }}<div class="small text-muted">{{ m.generic_name }}</div></td>
+  <td>{{ m.pharmacy.name }}<div class="small text-muted">{{ m.pharmacy.location }}</div></td>
+  <td><span class="badge bg-{{ m.badge }}">{{ m.get_status_display }}</span></td>
+  <td class="small">{{ m.availability_updated_at|date:"M d, Y h:i A" }}</td>
+  <td class="text-end">
+    <a href="{% url 'admin_medicine_edit' m.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+    <form method="post" action="{% url 'admin_medicine_delete' m.id %}" class="d-inline" onsubmit="return confirm('Delete this listing?')">{% csrf_token %}
+      <button class="btn btn-sm btn-outline-danger">Delete</button></form>
+  </td>
+</tr>
+{% empty %}<tr><td colspan="5" class="text-center text-muted py-4">No medicine listings.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

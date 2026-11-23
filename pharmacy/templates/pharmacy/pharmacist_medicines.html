@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}My Medicines - Medilynk{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-start mb-3 flex-wrap gap-2">
+  <div>
+    <h3 class="fw-bold text-primary mb-0">{{ pharmacy.name }}</h3>
+    <p class="text-muted small mb-0">{{ pharmacy.location }}{% if pharmacy.contact_number %} · {{ pharmacy.contact_number }}{% endif %}
+      {% if not pharmacy.is_active %}<span class="badge bg-secondary">Deactivated by admin</span>{% endif %}</p>
+  </div>
+  <div>
+    <a href="{% url 'my_pharmacy' %}" class="btn btn-outline-primary">Edit Pharmacy</a>
+    <a href="{% url 'medicine_create' %}" class="btn btn-primary">+ Add Medicine</a>
+  </div>
+</div>
+
+<form class="d-flex mb-3" method="get">
+  <input name="q" value="{{ q }}" class="form-control me-2" placeholder="Search my medicines">
+  <button class="btn btn-outline-primary">Search</button>
+</form>
+
+<div class="table-responsive card shadow-sm border-0"><table class="table mb-0 align-middle">
+<thead><tr><th>Medicine</th><th>Availability</th><th>Last updated</th><th class="text-end">Actions</th></tr></thead>
+{% for m in medicines %}
+<tr>
+  <td>{{ m.name }} {{ m.strength }}<div class="small text-muted">{{ m.generic_name }}</div></td>
+  <td>
+    <form method="post" action="{% url 'medicine_status' m.id %}" class="d-flex gap-1">{% csrf_token %}
+      <select name="status" class="form-select form-select-sm" style="width:9.5rem">
+        {% for val, label in statuses %}<option value="{{ val }}" {% if val == m.status %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <button class="btn btn-sm btn-success">Update</button>
+    </form>
+  </td>
+  <td class="small">{{ m.availability_updated_at|date:"M d, Y h:i A" }}</td>
+  <td class="text-end">
+    <a href="{% url 'medicine_edit' m.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+    <form method="post" action="{% url 'medicine_delete' m.id %}" class="d-inline" onsubmit="return confirm('Remove this medicine from your listing?')">{% csrf_token %}
+      <button class="btn btn-sm btn-outline-danger">Delete</button></form>
+  </td>
+</tr>
+{% empty %}<tr><td colspan="4" class="text-center text-muted py-4">No medicines listed yet.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

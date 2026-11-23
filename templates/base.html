@@ -9,13 +9,21 @@
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container">
-           <a class="navbar-brand fw-bold" href="{% if user.is_authenticated %}{% if user.role == 'admin' or user.is_staff %}{% url 'admin_dashboard' %}{% else %}{% url 'patient_dashboard' %}{% endif %}{% else %}{% url 'login' %}{% endif %}">Medilynk</a>
-            <div class="ms-auto d-flex align-items-center gap-2">
+            <a class="navbar-brand fw-bold" href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'login' %}{% endif %}">Medilynk</a>
+            <div class="ms-auto d-flex align-items-center gap-2 flex-wrap">
                 {% if user.is_authenticated %}
                     <span class="text-white small me-2">{{ user.username }} ({{ user.get_role_display }})</span>
-                    {% if user.is_staff %}
+                    {% if user.role == 'admin' or user.is_staff %}
+                        <a href="{% url 'admin_pharmacies' %}" class="btn btn-outline-light btn-sm">Pharmacies</a>
+                        <a href="{% url 'admin_medicines' %}" class="btn btn-outline-light btn-sm">Medicines</a>
                         <a href="/admin/" class="btn btn-outline-light btn-sm">Admin Panel</a>
+                    {% elif user.role == 'seeker' %}
+                        <a href="{% url 'medicine_search' %}" class="btn btn-outline-light btn-sm">Search Medicines</a>
+                    {% elif user.role == 'pharmacist' %}
+                        <a href="{% url 'my_pharmacy' %}" class="btn btn-outline-light btn-sm">My Pharmacy</a>
+                        <a href="{% url 'pharmacist_medicines' %}" class="btn btn-outline-light btn-sm">My Medicines</a>
                     {% endif %}
+                    <a href="{% url 'profile' %}" class="btn btn-outline-light btn-sm">Profile</a>
                     <a href="{% url 'logout' %}" class="btn btn-light btn-sm">Logout</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="btn btn-outline-light btn-sm">Login</a>
