@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Pharmacies - Medilynk{% endblock %}
+{% block content %}
+<h3 class="fw-bold text-primary mb-3">Participating Pharmacies</h3>
+<div class="table-responsive card shadow-sm border-0"><table class="table mb-0 align-middle">
+<thead><tr><th>Pharmacy</th><th>Location</th><th>Owner</th><th>Medicines</th><th>Status</th><th></th></tr></thead>
+{% for p in pharmacies %}
+<tr>
+  <td>{{ p.name }}<div class="small text-muted">{{ p.contact_number }}</div></td>
+  <td>{{ p.location }}</td>
+  <td>{{ p.owner.username }}</td>
+  <td>{{ p.med_count }}</td>
+  <td>{% if p.is_active %}<span class="badge bg-success">Participating</span>{% else %}<span class="badge bg-secondary">Deactivated</span>{% endif %}</td>
+  <td class="text-end">
+    <form method="post" action="{% url 'pharmacy_toggle' p.id %}">{% csrf_token %}
+      <button class="btn btn-sm {% if p.is_active %}btn-outline-danger{% else %}btn-outline-success{% endif %}">{% if p.is_active %}Deactivate{% else %}Activate{% endif %}</button>
+    </form>
+  </td>
+</tr>
+{% empty %}<tr><td colspan="6" class="text-center text-muted py-4">No pharmacies registered yet.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

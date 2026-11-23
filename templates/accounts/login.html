@@ -7,6 +7,7 @@
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
                 <h4 class="card-title text-center mb-4 fw-bold text-primary">Sign In to Medilynk</h4>
+                {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
                 <form method="POST">
                     {% csrf_token %}
                     <div class="mb-3">

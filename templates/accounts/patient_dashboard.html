@@ -1,56 +1,38 @@
 {% extends 'base.html' %}
+{% block title %}Dashboard - Medilynk{% endblock %}
 
 {% block content %}
 <div class="container py-4">
-    <!-- Patient Welcome Banner -->
     <div class="card shadow-sm border-0 mb-4 border-start border-success border-5">
         <div class="card-body p-4">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h2 class="text-success fw-bold mb-1">Customer Portal — Welcome, {{ request.user.username|title }}!</h2>
-                    <p class="text-muted mb-2">Account Status: <span class="badge bg-success">Active Customer</span></p>
-                    <p class="mb-0 text-secondary">Track your upcoming medical appointments, view active prescriptions, and access your personal health records.</p>
+                    <h2 class="text-success fw-bold mb-1">Medicine Seeker Portal — Welcome, {{ request.user.username|title }}!</h2>
+                    <p class="mb-0 text-secondary">Find out which participating pharmacies currently have the medicine you need.</p>
                 </div>
                 <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    <a href="{% url 'profile' %}" class="btn btn-success">
-                        <i class="fas fa-user-edit"></i> Edit My Profile
-                    </a>
+                    <a href="{% url 'profile' %}" class="btn btn-success">Edit My Profile</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Patient Modules -->
     <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold text-success">My Appointments</h5>
-                    <p class="card-text text-muted small">View your scheduled check-ups and doctor consultations.</p>
-                    <a href="#" class="btn btn-sm btn-outline-success">View Schedule</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold text-success">My Prescriptions</h5>
-                    <p class="card-text text-muted small">Check active medication dosages and doctor's instructions.</p>
-                    <a href="#" class="btn btn-sm btn-outline-success">View Medications</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold text-success">Lab & Health Records</h5>
-                    <p class="card-text text-muted small">Download your diagnostic reports and medical history.</p>
-                    <a href="#" class="btn btn-sm btn-outline-success">Access Records</a>
-                </div>
-            </div>
-        </div>
+        <div class="col-md-4"><div class="card shadow-sm border-0 h-100 border-start border-success border-4"><div class="card-body">
+            <h6 class="text-muted text-uppercase small fw-bold">Participating Pharmacies</h6><h2 class="fw-bold mb-0">{{ pharmacy_count }}</h2>
+        </div></div></div>
+        <div class="col-md-4"><div class="card shadow-sm border-0 h-100 border-start border-primary border-4"><div class="card-body">
+            <h6 class="text-muted text-uppercase small fw-bold">Medicines Listed</h6><h2 class="fw-bold mb-0">{{ listed_count }}</h2>
+        </div></div></div>
+        <div class="col-md-4"><div class="card shadow-sm border-0 h-100 border-start border-info border-4"><div class="card-body">
+            <h6 class="text-muted text-uppercase small fw-bold">Currently Available</h6><h2 class="fw-bold mb-0">{{ available_count }}</h2>
+        </div></div></div>
     </div>
+
+    <div class="card shadow-sm border-0 mt-4"><div class="card-body">
+        <h5 class="fw-bold text-success">Search Medicine Availability</h5>
+        <p class="text-muted small">Search by name, then filter by availability, pharmacy or location.</p>
+        <a href="{% url 'medicine_search' %}" class="btn btn-success">Search Medicines</a>
+    </div></div>
 </div>
 {% endblock %}

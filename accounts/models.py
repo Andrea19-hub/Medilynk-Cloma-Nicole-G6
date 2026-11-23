@@ -4,13 +4,13 @@ from django.db import models
 
 class User(AbstractUser):
     ROLE_CHOICES = (
-        ('medicine seeker', 'Medicine Seeker'),
+        ('seeker', 'Medicine Seeker'),
         ('pharmacist', 'Pharmacist'),
-        ('admin', 'Admin')
+        ('admin', 'Admin'),
     )
 
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='patient')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='seeker')
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)

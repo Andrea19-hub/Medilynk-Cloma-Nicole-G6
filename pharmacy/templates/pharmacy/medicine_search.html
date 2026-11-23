@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %}Search Medicines - Medilynk{% endblock %}
+{% block content %}
+<h3 class="fw-bold text-primary mb-3">Search Medicine Availability</h3>
+
+<form class="card shadow-sm border-0 mb-4" method="get">
+  <div class="card-body row g-2 align-items-end">
+    <div class="col-md-3">
+      <label class="form-label small mb-1">Medicine name</label>
+      <input name="q" value="{{ q }}" class="form-control" placeholder="Name or generic name">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small mb-1">Availability</label>
+      <select name="status" class="form-select">
+        <option value="">Any</option>
+        {% for val, label in statuses %}<option value="{{ val }}" {% if val == status %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label small mb-1">Pharmacy</label>
+      <select name="pharmacy" class="form-select">
+        <option value="">All pharmacies</option>
+        {% for p in pharmacies %}<option value="{{ p.id }}" {% if p.id|stringformat:"s" == pharmacy_id %}selected{% endif %}>{{ p.name }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label class="form-label small mb-1">Location</label>
+      <input name="location" value="{{ location }}" class="form-control" placeholder="e.g. Cebu">
+    </div>
+    <div class="col-md-2 d-flex gap-2">
+      <button class="btn btn-primary flex-fill">Search</button>
+      <a href="{% url 'medicine_search' %}" class="btn btn-outline-secondary">Reset</a>
+    </div>
+  </div>
+</form>
+
+<p class="small text-muted">{{ medicines|length }} result{{ medicines|length|pluralize }}. Availability is reported by each pharmacy and may change; it is not a guarantee that stock is on the shelf when you arrive.</p>
+
+<div class="row g-3">
+{% for m in medicines %}
+  <div class="col-md-4"><div class="card shadow-sm border-0 h-100"><div class="card-body">
+    <div class="d-flex justify-content-between align-items-start">
+      <h5 class="fw-bold mb-1">{{ m.name }} {{ m.strength }}</h5>
+      <span class="badge bg-{{ m.badge }}">{{ m.get_status_display }}</span>
+    </div>
+    {% if m.generic_name %}<p class="text-muted small mb-2">{{ m.generic_name }}</p>{% endif %}
+    {% if m.description %}<p class="small">{{ m.description|truncatechars:100 }}</p>{% endif %}
+    <hr class="my-2">
+    <p class="mb-0 fw-semibold">{{ m.pharmacy.name }}</p>
+    <p class="small text-muted mb-1">{{ m.pharmacy.location }}{% if m.pharmacy.contact_number %} · {{ m.pharmacy.contact_number }}{% endif %}</p>
+    <p class="small text-muted mb-0">Last updated {{ m.availability_updated_at|date:"M d, Y h:i A" }} ({{ m.availability_updated_at|timesince }} ago)</p>
+  </div></div></div>
+{% empty %}
+  <div class="col-12"><p class="text-muted">No medicines match your search.</p></div>
+{% endfor %}
+</div>
+{% endblock %}
